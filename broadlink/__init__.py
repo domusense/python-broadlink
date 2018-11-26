@@ -897,6 +897,11 @@ def setup(ssid, password, security_mode):
 
   sock = socket.socket(socket.AF_INET,  # Internet
                        socket.SOCK_DGRAM)  # UDP
+
+  # if we bind the socket to a local IP that is connected to the Broadlink AP
+  # We will not need to disable all network interfaces on our device.
+  # But it will be nice to have something not static
+  sock.bind(('192.168.10.2', 0))
   sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
   sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
   sock.sendto(payload, ('255.255.255.255', 80))
