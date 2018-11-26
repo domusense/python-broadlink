@@ -866,7 +866,7 @@ class dooya(device):
 
 # Setup a new Broadlink device via AP Mode. Review the README to see how to enter AP Mode.
 # Only tested with Broadlink RM3 Mini (Blackbean)
-def setup(ssid, password, security_mode):
+def setup(ssid, password, security_mode, local_ip_address):
   # Security mode options are (0 - none, 1 = WEP, 2 = WPA1, 3 = WPA2, 4 = WPA1/2)
   payload = bytearray(0x88)
   payload[0x26] = 0x14  # This seems to always be set to 14
@@ -901,7 +901,7 @@ def setup(ssid, password, security_mode):
   # if we bind the socket to a local IP that is connected to the Broadlink AP
   # We will not need to disable all network interfaces on our device.
   # But it will be nice to have something not static
-  sock.bind(('192.168.10.2', 0))
+  sock.bind((local_ip_address, 0))
   sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
   sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
   sock.sendto(payload, ('255.255.255.255', 80))
